@@ -14,16 +14,10 @@
 
 #define macro MAIN() = takes(0) returns(0) {
 
-  0x00
-  calldataload
-  0xE0
-  shr
+  0x00 calldataload 0xE0 shr
 
   // Jump to the implementation of the ADD_TWO function if the calldata matches the function selector
-  __FUNC_SIG(add1) eq add1 jumpi
-
-  revert
-
+  __FUNC_SIG(add1) eq add1 jumpi revert
   add1:
     0x04 // [0x04]
     calldataload // [n]
