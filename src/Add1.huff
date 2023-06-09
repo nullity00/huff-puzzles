@@ -14,16 +14,19 @@
 
 #define macro MAIN() = takes(0) returns(0) {
 
-  0x00 calldataload 0xE0 shr
+  0x00 // [0x00]
+  calldataload // [n]
+  0xE0 // [0xE0, n] takes in 224
+  shr // [n >> 224] takes in the first 4 bytes of the calldata by shifting right by 224 bits
 
   // Jump to the implementation of the ADD_TWO function if the calldata matches the function selector
-  __FUNC_SIG(add1) eq add1 jumpi revert
+  __FUNC_SIG(add1) eq add1 jumpi revert // if n == add1, jump to the implementation of the add1 function else revert
   add1:
-    0x04 // [0x04]
-    calldataload // [n]
-    0x01 // [0x01, n]
-    add // [n+1]
-    0x00 // [0x00, n+1]
+    0x04 // [0x04] 
+    calldataload // [n] Takes in the number 4 bytes after the function selector
+    0x01 // [0x01, n] Takes in 1
+    add // [n+1] Adds 1 to the number
+    0x00 // [0x00, n+1] 
     mstore // []
     0x20 // [0x20]
     0x00 // [0x00, 0x20]

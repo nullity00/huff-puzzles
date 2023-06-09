@@ -9,5 +9,12 @@
 */
 
 #define macro MAIN() = takes(0) returns(0) {
-    
+
+  calldatasize // [m] get the length of the calldata
+  returndatasize // [n, m] get the length of the returndata  
+  mstore // [] store the length of the calldata at memory location n
+
+  0x20 // [0x20] 
+  returndatasize // [n, 0x20] 
+  return // return the length of the calldata which is stored at memory location n & goes upto 32 bytes
 }

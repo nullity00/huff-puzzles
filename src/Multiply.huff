@@ -14,4 +14,42 @@
 
 #define macro MAIN() = takes(0) returns(0) {
 
+  0x00 
+  calldataload
+  0xE0
+  shr
+
+  __FUNC_SIG(multiply) eq multiply jumpi revert
+  multiply:
+    0x04
+    calldataload // [a]
+
+    dup1 // [a, a]
+    returndatasize // [m, a, a] 
+    eq // [m == a, a]
+    returnvalue // jump to returnvalue if m == a
+    jumpi 
+
+    0x24 
+    calldataload // [b, a]
+    dup1 // [b, b, a]
+    dup3 // [a, b, b, a]
+    mul // [a * b, b, a]
+
+    dup2 // [b, a * b, b, a]
+    dup2 // [a * b, b, a * b, b, a]
+    div // [a * b / b , a * b, b, a]
+    dup4 // [a, a * b / b , a * b, b, a]
+    eq // [a == a * b / b , a * b, b, a]
+    returnvalue // jump to returnvalue if a == a * b / b
+    jumpi
+    revert
+
+    returnvalue:
+      returndatasize
+      mstore
+      0x20
+      returndatasize
+      return
+
 }

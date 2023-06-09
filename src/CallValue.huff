@@ -9,5 +9,13 @@
 */
 
 #define macro MAIN() = takes(0) returns(0) {
+
+  callvalue // [n] get the value sent with the call
+  returndatasize // [m, n] get the size of the data returned from the call
+  mstore // [] store the value in memory
+
+  0x20 // [0x20] 
+  returndatasize // [m, 0x20] get the size of the data returned from the call
+  return // [m] return the value
     
 }

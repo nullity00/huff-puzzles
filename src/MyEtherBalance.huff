@@ -8,5 +8,13 @@
  */
 
 #define macro MAIN() = takes(0) returns(0) {
-   
+
+  caller // [m] get the address of the sender of the transaction
+  balance // [n] get the ether balance of the address
+  returndatasize // [o, n] get the size of the return data
+  mstore // store n at o
+
+  0x20 // [0x20] 
+  returndatasize // [p, 0x20] 
+  return // return the data at p with length 0x20
 }
