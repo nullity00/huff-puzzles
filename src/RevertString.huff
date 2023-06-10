@@ -13,5 +13,20 @@
 
 
 #define macro MAIN() = takes(0) returns(0) {
-    
+  0x20
+  returndatasize
+  mstore // offset
+
+  0x09
+  0x20
+  mstore // store length from 32 to 64
+
+  __RIGHTPAD(0x4f6e6c792048756666)
+  0x40
+  mstore // store string from 64 to 96
+
+  0x60
+  returndatasize
+  revert // revert with string from 0 to 96
+
 }

@@ -14,5 +14,11 @@
 #define error OnlyHuff()
 
 #define macro MAIN() = takes(0) returns(0) {
-    
+    __FUNC_SIG("OnlyHuff()") 0xE0 shl // has first 4 bytes of keccak256 hash of "OnlyHuff()" function signature
+    returndatasize // [m, n]
+    mstore // store n at m
+    0x20
+    returndatasize
+    revert // revert with custom error at m to m + 32 bytes
+
 }

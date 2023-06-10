@@ -16,5 +16,30 @@
 
 
 #define macro MAIN() = takes(0) returns(0) {
+    returndatasize
+    calldataload
+    0xE0
+    shr
+
+    dup1 __FUNC_SIG(store) eq store jumpi
+    dup1 __FUNC_SIG(read) eq read jumpi
+
+    invalid
+
+    store:
+      0x04
+      calldataload // load the number ar the 4th byte
+      returndatasize // [m, n]
+      sstore // store n at m
+      stop
     
+    read:
+      returndatasize
+      sload // [n]
+      returndatasize // [m, n]
+      mstore // [] store n at m
+      0x20 // [0x20]
+      returndatasize // [m, 0x20]
+      return // return from m to 34 bytes
+
 }
