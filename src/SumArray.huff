@@ -13,4 +13,47 @@
 
 #define macro MAIN() = takes(0) returns(0) {
 
+  returndatasize
+  calldataload
+  0xE0
+  shr
+
+  __FUNC_SIG(sumArray) eq sumArray jumpi revert
+
+  sumArray:
+    0x24
+    calldataload // [n] load the length of the array after offset of 32 bytes so 4 + 32 = 36
+    0x00 // [0x00, n] sum = 0
+    0x24 // [0x24, 0x00, n] offset added
+
+    start:
+      dup3 // [n, 0x24, 0x00, n] duplicate the length of the array
+      iszero // [n == 0, 0x24, 0x00, n] check if the length is 0
+      endJump // [0x24, 0x00, n] if the length is 0, jump to end
+      jumpi
+
+      0x20 add // [0x20 + 0x24, 0x00, n] offset added
+
+      swap1 // [0x00, 0x24, n] swap the sum and the length
+      dup2 // [0x24, 0x00, 0x24, n] duplicate the offset
+      calldataload // [arr[i], 0x00, 0x24, n] load the first element of the array
+      add // [arr[i] + sum, 0x24, n] add the first element to the sum
+
+      swap2 // [n, 0x24, sum] swap the sum and the length
+      0x01 // [0x01, n, 0x24, sum] 
+      swap1 // [n, 0x01, 0x24, sum] 
+      sub // [n - 1, 0x24, sum] decrement the length
+      swap2 // [sum, 0x24, n - 1] swap the sum and the length
+      swap1 // [0x24, sum, n - 1] swap the sum and the offset
+      
+      start 
+      jump
+
+    endJump:
+      pop // [sum, 0]
+      returndatasize // [m, sum, 0]
+      mstore // [0] store sum at m
+      0x20 // [0x20, 0] 
+      returndatasize // [m, 0x20, 0]
+      return // [0] return m to 32 bytes
 }
